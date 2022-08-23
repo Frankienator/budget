@@ -1,0 +1,13 @@
+spring:
+  datasource:
+    url: "jdbc:h2:./finance-budget;AUTO_SERVER=TRUE;INIT=RUNSCRIPT FROM 'classpath:SQL/createSchema.sql'"
+    username: "sa"
+    password: password
+    driverClassName: org.h2.Driver
+  h2:
+    console:
+      enabled: true
+server:
+  port: 8080
+  error:
+    include-message: always
