@@ -24,6 +24,8 @@ public class Entry {
         this.type = type;
     }
 
+    public Entry() {}
+
     public Long getId() {
         return id;
     }
