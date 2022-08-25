@@ -17,6 +17,7 @@ public class EntryDAOimpl implements EntryDAO {
     //Strings for Queries and prepared statements
     private static final String TABLE_NAME = "entry";
     private static final String GET_ALL_ENTRIES = "SELECT * FROM " + TABLE_NAME;
+    private static final String GET_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
     //-------------------------------------------------
 
 
@@ -31,6 +32,19 @@ public class EntryDAOimpl implements EntryDAO {
     public List<Entry> getAllEntries() {
         try {
             return jdbcTemplate.query(GET_ALL_ENTRIES, this::mapRow);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public Entry getById(Long id){
+        try {
+            List<Entry> result = jdbcTemplate.query(GET_BY_ID, this::mapRow, id);
+            if (result.isEmpty()){
+                throw new Exception();
+            }
+            return result.get(0);
         } catch (Exception e) {
             throw new RuntimeException();
         }

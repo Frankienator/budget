@@ -3,6 +3,7 @@ package frankie.financebudget.rest;
 import frankie.financebudget.entities.objects.Entry;
 import frankie.financebudget.service.EntryService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +23,11 @@ public class entryEndpoint {
     @GetMapping("/all")
     public Stream<Entry> getAllEntries() {
         return entryService.getAllEntries().stream();
+    }
+
+    @GetMapping("/all/{id}")
+    public Entry getById(@PathVariable Long id) {
+        return entryService.getById(id);
     }
 
 }

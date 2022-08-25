@@ -20,4 +20,13 @@ public class EntryServiceImpl implements EntryService {
     public List<Entry> getAllEntries() {
         return entryDAO.getAllEntries();
     }
+
+    @Override
+    public Entry getById(Long id) {
+        try {
+            return entryDAO.getById(id);
+        } catch (RuntimeException e) {
+            throw new RuntimeException();
+        }
+    }
 }
