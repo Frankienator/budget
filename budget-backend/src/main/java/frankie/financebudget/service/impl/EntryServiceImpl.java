@@ -29,4 +29,13 @@ public class EntryServiceImpl implements EntryService {
             throw new RuntimeException();
         }
     }
+
+    @Override
+    public Entry createEntry(Entry create) {
+        try {
+            return entryDAO.createEntry(create);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

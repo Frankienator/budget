@@ -2,10 +2,9 @@ package frankie.financebudget.rest;
 
 import frankie.financebudget.entities.objects.Entry;
 import frankie.financebudget.service.EntryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -27,7 +26,25 @@ public class entryEndpoint {
 
     @GetMapping("/all/{id}")
     public Entry getById(@PathVariable Long id) {
-        return entryService.getById(id);
+        try {
+            return entryService.getById(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
     }
 
+    @PostMapping("/create")
+    public Entry createEntry(@RequestBody Entry create) {
+        try {
+            Entry add = new Entry(
+                    create.getAmount(),
+                    create.getDescription(),
+                    create.getDateCreated(),
+                    create.getType());
+
+            return entryService.createEntry(add);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
+        }
+    }
 }

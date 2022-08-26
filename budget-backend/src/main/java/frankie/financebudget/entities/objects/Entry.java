@@ -66,4 +66,14 @@ public class Entry {
         this.type = type;
     }
 
+    @Override
+    public String toString() {
+        return "Entry{" +
+                "id=" + id +
+                ", amount=" + amount +
+                ", description='" + description + '\'' +
+                ", dateCreated=" + dateCreated +
+                ", type=" + type +
+                '}';
+    }
 }

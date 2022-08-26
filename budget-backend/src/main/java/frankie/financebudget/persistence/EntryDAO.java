@@ -9,4 +9,6 @@ public interface EntryDAO {
     public List<Entry> getAllEntries();
 
     public Entry getById(Long id);
+
+    public Entry createEntry(Entry create);
 }

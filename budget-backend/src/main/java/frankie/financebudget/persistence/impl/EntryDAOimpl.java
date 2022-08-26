@@ -5,10 +5,11 @@ import frankie.financebudget.entities.objects.Entry;
 import frankie.financebudget.persistence.EntryDAO;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 @Repository
@@ -18,6 +19,7 @@ public class EntryDAOimpl implements EntryDAO {
     private static final String TABLE_NAME = "entry";
     private static final String GET_ALL_ENTRIES = "SELECT * FROM " + TABLE_NAME;
     private static final String GET_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
+    private static final String CREATE_ENTRY = "INSERT INTO " + TABLE_NAME + " (description, amount, created, type) VALUES (?, ?, ?, ?)";
     //-------------------------------------------------
 
 
@@ -50,6 +52,14 @@ public class EntryDAOimpl implements EntryDAO {
         }
     }
 
+    @Override
+    public Entry createEntry(Entry create) {
+        try {
+           return null;
+        } catch (Exception e) {
+            throw new RuntimeException("Issue in Persistence Layer");
+        }
+    }
 
 
     private Entry mapRow(ResultSet result, int rowNum) throws SQLException {
@@ -60,7 +70,7 @@ public class EntryDAOimpl implements EntryDAO {
         entry.setAmount(result.getDouble("amount"));
         entry.setDateCreated(result.getDate("dateCreated").toLocalDate());
         entry.setType(EntryType.valueOf(result.getString("type")));
-
+        System.out.println(entry.toString());
         return entry;
     }
 }
