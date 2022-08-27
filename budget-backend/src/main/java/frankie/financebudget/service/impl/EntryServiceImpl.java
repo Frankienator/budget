@@ -38,4 +38,15 @@ public class EntryServiceImpl implements EntryService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @Override
+    public Entry updateEntry(Entry update) {
+        try {
+
+            return entryDAO.updateEntry(update);
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

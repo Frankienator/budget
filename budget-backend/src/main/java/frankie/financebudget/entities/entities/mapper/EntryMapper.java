@@ -2,7 +2,9 @@ package frankie.financebudget.entities.entities.mapper;
 
 import frankie.financebudget.entities.entities.dto.EntryDto;
 import frankie.financebudget.entities.entities.objects.Entry;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EntryMapper {
 
     public Entry dtoToEntity(EntryDto entryDto) {

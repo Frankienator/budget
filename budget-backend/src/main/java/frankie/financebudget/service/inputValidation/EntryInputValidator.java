@@ -1,2 +1,7 @@
-package frankie.financebudget.service.inputValidation;public class EntryInputValidator {
+package frankie.financebudget.service.inputValidation;
+
+import org.springframework.stereotype.Component;
+
+@Componentgit 
+public class EntryInputValidator {
 }

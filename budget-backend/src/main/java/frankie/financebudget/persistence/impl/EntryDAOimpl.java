@@ -16,10 +16,11 @@ import java.util.List;
 public class EntryDAOimpl implements EntryDAO {
 
     //Strings for Queries and prepared statements
-    private static final String TABLE_NAME = "entry";
-    private static final String GET_ALL_ENTRIES = "SELECT * FROM " + TABLE_NAME;
-    private static final String GET_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-    private static final String CREATE_ENTRY = "INSERT INTO " + TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
+    private static final String SQL_TABLE_NAME = "entry";
+    private static final String SQL_GET_ALL_ENTRIES = "SELECT * FROM " + SQL_TABLE_NAME;
+    private static final String SQL_GET_BY_ID = "SELECT * FROM " + SQL_TABLE_NAME + " WHERE id = ?";
+    private static final String SQL_CREATE_ENTRY = "INSERT INTO " + SQL_TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
+    private static final String SQL_UPDATE_ENTRY = "UPDATE " + SQL_TABLE_NAME + " SET description = ?, amount = ?, dateCreated = ?, type = ? WHERE id = ?";
     //-------------------------------------------------
 
 
@@ -33,7 +34,7 @@ public class EntryDAOimpl implements EntryDAO {
     @Override
     public List<Entry> getAllEntries() {
         try {
-            return jdbcTemplate.query(GET_ALL_ENTRIES, this::mapRow);
+            return jdbcTemplate.query(SQL_GET_ALL_ENTRIES, this::mapRow);
         } catch (Exception e) {
             throw new RuntimeException();
         }
@@ -42,7 +43,7 @@ public class EntryDAOimpl implements EntryDAO {
     @Override
     public Entry getById(Long id){
         try {
-            List<Entry> result = jdbcTemplate.query(GET_BY_ID, this::mapRow, id);
+            List<Entry> result = jdbcTemplate.query(SQL_GET_BY_ID, this::mapRow, id);
             if (result.isEmpty()){
                 throw new Exception();
             }
@@ -52,13 +53,15 @@ public class EntryDAOimpl implements EntryDAO {
         }
     }
 
+
+    //"INSERT INTO " + SQL_TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
     @Override
     public Entry createEntry(Entry create) {
         try {
            KeyHolder keyHolder = new GeneratedKeyHolder();
            jdbcTemplate.update(connection -> {
                PreparedStatement statement = connection.prepareStatement(
-                       CREATE_ENTRY,
+                       SQL_CREATE_ENTRY,
                        Statement.RETURN_GENERATED_KEYS
                );
 
@@ -83,6 +86,30 @@ public class EntryDAOimpl implements EntryDAO {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    //"UPDATE TABLE " + SQL_TABLE_NAME + " SET description = ?, amount = ?, dateCreated = ?, type = ? WHERE id = ?";
+    @Override
+    public Entry updateEntry(Entry update) {
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement statement = connection.prepareStatement(
+                        SQL_UPDATE_ENTRY
+                );
+                statement.setString(1, update.getDescription());
+                statement.setDouble(2, update.getAmount());
+                statement.setDate(3, Date.valueOf(update.getDateCreated()));
+                statement.setString(4, update.getType().toString());
+                statement.setLong(5, update.getId());
+
+                return statement;
+            });
+
+            return update;
+
+        } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
     }

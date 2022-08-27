@@ -11,4 +11,6 @@ public interface EntryService {
     public Entry getById(Long id);
 
     public Entry createEntry(Entry create);
+
+    public Entry updateEntry(Entry update);
 }
