@@ -3,7 +3,7 @@ package frankie.financebudget.entities.entities.mapper;
 import frankie.financebudget.entities.entities.dto.EntryDto;
 import frankie.financebudget.entities.entities.objects.Entry;
 
-public class entryMapper {
+public class EntryMapper {
 
     public Entry dtoToEntity(EntryDto entryDto) {
         return new Entry(

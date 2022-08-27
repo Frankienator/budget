@@ -1,5 +1,7 @@
 package frankie.financebudget.rest;
 
+import frankie.financebudget.entities.entities.dto.EntryDto;
+import frankie.financebudget.entities.entities.mapper.EntryMapper;
 import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.service.EntryService;
 import org.springframework.http.HttpStatus;
@@ -14,34 +16,34 @@ public class entryEndpoint {
 
     static final String ENTRY_URL = "/entry";
     private final EntryService entryService;
+    private final EntryMapper mapper;
 
-    public entryEndpoint(EntryService entryService) {
+    public entryEndpoint(EntryService entryService, EntryMapper mapper) {
         this.entryService = entryService;
+        this.mapper = mapper;
     }
     @GetMapping("/all")
-    public Stream<Entry> getAllEntries() {
-        return entryService.getAllEntries().stream();
+    public Stream<EntryDto> getAllEntries() {
+        return entryService.getAllEntries().stream()
+                .map(mapper::entityToDto);
     }
 
     @GetMapping("/all/{id}")
-    public Entry getById(@PathVariable Long id) {
+    public EntryDto getById(@PathVariable Long id) {
         try {
-            return entryService.getById(id);
+            return mapper.entityToDto(entryService.getById(id));
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/create")
-    public Entry createEntry(@RequestBody Entry create) {
+    public EntryDto createEntry(@RequestBody EntryDto create) {
         try {
-            Entry add = new Entry(
-                    create.getAmount(),
-                    create.getDescription(),
-                    create.getDateCreated(),
-                    create.getType());
 
-            return entryService.createEntry(add);
+            Entry add = mapper.dtoToEntity(create);
+            return mapper.entityToDto(entryService.createEntry(add));
+
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
         }
