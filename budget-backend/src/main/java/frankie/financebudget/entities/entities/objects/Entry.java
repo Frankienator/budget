@@ -1,4 +1,4 @@
-package frankie.financebudget.entities.objects;
+package frankie.financebudget.entities.entities.objects;
 
 import java.time.LocalDate;
 
@@ -18,6 +18,20 @@ public class Entry {
             LocalDate dateCreated,
             EntryType type) {
 
+        this.amount = amount;
+        this.description = description;
+        this.dateCreated = dateCreated;
+        this.type = type;
+    }
+
+    public Entry(
+            Long id,
+            double amount,
+            String description,
+            LocalDate dateCreated,
+            EntryType type) {
+
+        this.id = id;
         this.amount = amount;
         this.description = description;
         this.dateCreated = dateCreated;

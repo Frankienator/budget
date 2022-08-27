@@ -1,7 +1,7 @@
 package frankie.financebudget.persistence.impl;
 
 import frankie.financebudget.entities.enumerations.EntryType;
-import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.persistence.EntryDAO;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -19,7 +19,7 @@ public class EntryDAOimpl implements EntryDAO {
     private static final String TABLE_NAME = "entry";
     private static final String GET_ALL_ENTRIES = "SELECT * FROM " + TABLE_NAME;
     private static final String GET_BY_ID = "SELECT * FROM " + TABLE_NAME + " WHERE id = ?";
-    private static final String CREATE_ENTRY = "INSERT INTO " + TABLE_NAME + " (description, amount, created, type) VALUES (?, ?, ?, ?)";
+    private static final String CREATE_ENTRY = "INSERT INTO " + TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
     //-------------------------------------------------
 
 
@@ -55,9 +55,35 @@ public class EntryDAOimpl implements EntryDAO {
     @Override
     public Entry createEntry(Entry create) {
         try {
-           return null;
+           KeyHolder keyHolder = new GeneratedKeyHolder();
+           jdbcTemplate.update(connection -> {
+               PreparedStatement statement = connection.prepareStatement(
+                       CREATE_ENTRY,
+                       Statement.RETURN_GENERATED_KEYS
+               );
+
+               statement.setString(1, create.getDescription());
+               statement.setDouble(2, create.getAmount());
+               statement.setDate(3, Date.valueOf(create.getDateCreated()));
+               statement.setString(4, create.getType().toString());
+
+               return statement;
+           }, keyHolder);
+
+           Entry created = new Entry(
+                   create.getAmount(),
+                   create.getDescription(),
+                   create.getDateCreated(),
+                   create.getType()
+           );
+
+           created.setId(((Number)keyHolder.getKeys().get("id")).longValue());
+
+           return created;
+
         } catch (Exception e) {
-            throw new RuntimeException("Issue in Persistence Layer");
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 
@@ -70,7 +96,7 @@ public class EntryDAOimpl implements EntryDAO {
         entry.setAmount(result.getDouble("amount"));
         entry.setDateCreated(result.getDate("dateCreated").toLocalDate());
         entry.setType(EntryType.valueOf(result.getString("type")));
-        System.out.println(entry.toString());
+
         return entry;
     }
 }

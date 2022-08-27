@@ -1,6 +1,6 @@
 package frankie.financebudget.service.impl;
 
-import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.persistence.EntryDAO;
 import frankie.financebudget.service.EntryService;
 

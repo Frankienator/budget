@@ -1,6 +1,6 @@
 package frankie.financebudget.service;
 
-import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.entities.entities.objects.Entry;
 
 import java.util.List;
 

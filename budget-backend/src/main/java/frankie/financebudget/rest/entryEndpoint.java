@@ -1,12 +1,11 @@
 package frankie.financebudget.rest;
 
-import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.service.EntryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
 import java.util.stream.Stream;
 
 @RestController
