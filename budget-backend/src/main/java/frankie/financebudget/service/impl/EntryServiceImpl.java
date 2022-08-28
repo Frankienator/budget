@@ -49,4 +49,15 @@ public class EntryServiceImpl implements EntryService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+    @Override
+    public Long deleteEntry(Long delete) {
+        try {
+
+            return entryDAO.deleteEntry(delete);
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
 }

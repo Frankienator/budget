@@ -14,12 +14,16 @@ public class EntryInputValidator {
     private double maxAmount;
     private double minAmount;
     private LocalDate today;
+    private int status;
+    private String message;
 
     public EntryInputValidator() {
         this.descriptionLength = 256;
         this.maxAmount = 10000000.0;
         this.minAmount = -10000000.0;
         this.today = LocalDate.now();
+        this.status = -1;
+        this.message = "";
     }
 
     public Optional<String> descriptionValidator(String toValidate) {
@@ -32,5 +36,13 @@ public class EntryInputValidator {
 
     public Optional<String> dateValidator(LocalDate today) {
         return null;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

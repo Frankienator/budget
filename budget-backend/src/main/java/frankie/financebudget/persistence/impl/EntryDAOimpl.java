@@ -10,18 +10,32 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public class EntryDAOimpl implements EntryDAO {
 
     //Strings for Queries and prepared statements
+    //-----------------------------------------------------------------------------------------------------------------
+    //Table name
     private static final String SQL_TABLE_NAME = "entry";
+
+    //Get Queries
     private static final String SQL_GET_ALL_ENTRIES = "SELECT * FROM " + SQL_TABLE_NAME;
     private static final String SQL_GET_BY_ID = "SELECT * FROM " + SQL_TABLE_NAME + " WHERE id = ?";
+    private static final String SQL_GET_BY_MONTH_YEAR = "SELECT * FROM " + SQL_TABLE_NAME +
+            " WHERE EXTRACT(INTERVAL YEAR FROM dateCreated) = ? AND EXTRACT(INTERVAL MONTH FROM dateCreated) = ?";
+
+    //Post Queries
     private static final String SQL_CREATE_ENTRY = "INSERT INTO " + SQL_TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
+
+    //Put Queries
     private static final String SQL_UPDATE_ENTRY = "UPDATE " + SQL_TABLE_NAME + " SET description = ?, amount = ?, dateCreated = ?, type = ? WHERE id = ?";
-    //-------------------------------------------------
+
+    //Delete Queries
+    private static final String SQL_DELETE_ENTRY = "DELETE FROM " + SQL_TABLE_NAME + " WHERE id = ?";
+    //-----------------------------------------------------------------------------------------------------------------
 
 
     private final JdbcTemplate jdbcTemplate;
@@ -31,6 +45,10 @@ public class EntryDAOimpl implements EntryDAO {
     }
 
 
+    //Methods using GET queries
+    //-----------------------------------------------------------------------------------------------------------------
+
+    //SELECT * FROM entry
     @Override
     public List<Entry> getAllEntries() {
         try {
@@ -40,6 +58,8 @@ public class EntryDAOimpl implements EntryDAO {
         }
     }
 
+
+    //SELECT * FROM entry WHERE id = ?
     @Override
     public Entry getById(Long id){
         try {
@@ -54,7 +74,22 @@ public class EntryDAOimpl implements EntryDAO {
     }
 
 
-    //"INSERT INTO " + SQL_TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
+    //SELECT * FROM entry WHERE EXTRACT(INTERVAL YEAR FROM dateCreated) = ? AND EXTRACT(INTERVAL MONTH FROM dateCreated) = ?;
+    @Override
+    public List<Entry> getMonthResults(LocalDate monthYearCheck) {
+        try {
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
+    //Methods using POST queries
+    //-----------------------------------------------------------------------------------------------------------------
+
+
+    //INSERT INTO entry (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
     @Override
     public Entry createEntry(Entry create) {
         try {
@@ -90,7 +125,12 @@ public class EntryDAOimpl implements EntryDAO {
         }
     }
 
-    //"UPDATE TABLE " + SQL_TABLE_NAME + " SET description = ?, amount = ?, dateCreated = ?, type = ? WHERE id = ?";
+
+    //Methods using PUT queries
+    //-----------------------------------------------------------------------------------------------------------------
+
+
+    //UPDATE TABLE entry SET description = ?, amount = ?, dateCreated = ?, type = ? WHERE id = ?;
     @Override
     public Entry updateEntry(Entry update) {
         try {
@@ -113,6 +153,29 @@ public class EntryDAOimpl implements EntryDAO {
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
+    //Methods using DELETE queries
+    //-----------------------------------------------------------------------------------------------------------------
+
+
+    //DELETE FROM entry WHERE id = ?;
+    @Override
+    public Long deleteEntry(Long delete) {
+        try {
+
+            Long ret = delete;
+            int updateStatus = jdbcTemplate.update(SQL_DELETE_ENTRY, ret);
+            return ret;
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
+    //Private methods
+    //-----------------------------------------------------------------------------------------------------------------
 
 
     private Entry mapRow(ResultSet result, int rowNum) throws SQLException {

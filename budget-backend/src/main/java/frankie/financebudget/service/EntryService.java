@@ -13,4 +13,6 @@ public interface EntryService {
     public Entry createEntry(Entry create);
 
     public Entry updateEntry(Entry update);
+
+    public Long deleteEntry(Long delete);
 }

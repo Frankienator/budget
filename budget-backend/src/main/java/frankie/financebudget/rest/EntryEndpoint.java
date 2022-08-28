@@ -50,12 +50,23 @@ public class EntryEndpoint {
     }
 
 
-    @PutMapping("/update")
+    @PutMapping("/{id}/update")
     public EntryDto updateEntry(@RequestBody EntryDto update) {
         try {
 
             Entry toUpdate = mapper.dtoToEntity(update);
             return mapper.entityToDto(entryService.updateEntry(toUpdate));
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public Long deleteEntry(@PathVariable Long id) {
+        try {
+
+            return entryService.deleteEntry(id);
 
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
