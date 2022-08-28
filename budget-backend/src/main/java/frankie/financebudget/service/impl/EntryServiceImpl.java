@@ -1,11 +1,13 @@
 package frankie.financebudget.service.impl;
 
+import frankie.financebudget.entities.entities.objects.CompressedEntries;
 import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.persistence.EntryDAO;
 import frankie.financebudget.service.EntryService;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -27,6 +29,15 @@ public class EntryServiceImpl implements EntryService {
             return entryDAO.getById(id);
         } catch (RuntimeException e) {
             throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public CompressedEntries getByMonth(LocalDate monthYearComp) {
+        try {
+            return entryDAO.getMonthResults(monthYearComp);
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 

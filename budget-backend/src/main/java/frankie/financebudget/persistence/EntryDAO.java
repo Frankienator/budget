@@ -1,5 +1,6 @@
 package frankie.financebudget.persistence;
 
+import frankie.financebudget.entities.entities.objects.CompressedEntries;
 import frankie.financebudget.entities.entities.objects.Entry;
 
 import java.time.LocalDate;
@@ -11,7 +12,7 @@ public interface EntryDAO {
 
     public Entry getById(Long id);
 
-    public List<Entry> getMonthResults(LocalDate monthYearCheck);
+    public CompressedEntries getMonthResults(LocalDate monthYearCheck);
 
     public Entry createEntry(Entry create);
 

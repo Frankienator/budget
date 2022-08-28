@@ -1,5 +1,6 @@
 package frankie.financebudget.persistence.impl;
 
+import frankie.financebudget.entities.entities.objects.CompressedEntries;
 import frankie.financebudget.entities.enumerations.EntryType;
 import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.persistence.EntryDAO;
@@ -25,7 +26,11 @@ public class EntryDAOimpl implements EntryDAO {
     private static final String SQL_GET_ALL_ENTRIES = "SELECT * FROM " + SQL_TABLE_NAME;
     private static final String SQL_GET_BY_ID = "SELECT * FROM " + SQL_TABLE_NAME + " WHERE id = ?";
     private static final String SQL_GET_BY_MONTH_YEAR = "SELECT * FROM " + SQL_TABLE_NAME +
-            " WHERE EXTRACT(INTERVAL YEAR FROM dateCreated) = ? AND EXTRACT(INTERVAL MONTH FROM dateCreated) = ?";
+            " WHERE EXTRACT(YEAR FROM dateCreated) = ? AND EXTRACT(MONTH FROM dateCreated) = ?";
+    private static final String SQL_GET_INCOMING = "SELECT SUM(amount) AS sum FROM " + SQL_TABLE_NAME +
+            " WHERE EXTRACT(YEAR FROM dateCreated) = ? AND EXTRACT(MONTH FROM dateCreated) = ? AND amount > 0";
+    private static final String SQL_GET_OUTGOING = "SELECT SUM(amount) AS sum FROM " + SQL_TABLE_NAME +
+            " WHERE EXTRACT(YEAR FROM dateCreated) = ? AND EXTRACT(MONTH FROM dateCreated) = ? AND amount < 0";
 
     //Post Queries
     private static final String SQL_CREATE_ENTRY = "INSERT INTO " + SQL_TABLE_NAME + " (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
@@ -76,9 +81,14 @@ public class EntryDAOimpl implements EntryDAO {
 
     //SELECT * FROM entry WHERE EXTRACT(INTERVAL YEAR FROM dateCreated) = ? AND EXTRACT(INTERVAL MONTH FROM dateCreated) = ?;
     @Override
-    public List<Entry> getMonthResults(LocalDate monthYearCheck) {
+    public CompressedEntries getMonthResults(LocalDate monthYearCheck) {
         try {
-            return null;
+
+            double outgoing = jdbcTemplate.query(SQL_GET_OUTGOING, this::mapRowSum, monthYearCheck.getYear(), monthYearCheck.getMonthValue()).get(0);
+            double incoming = jdbcTemplate.query(SQL_GET_INCOMING, this::mapRowSum, monthYearCheck.getYear(), monthYearCheck.getMonthValue()).get(0);
+            List<Entry> entries = jdbcTemplate.query(SQL_GET_BY_MONTH_YEAR, this::mapRow, monthYearCheck.getYear(), monthYearCheck.getMonthValue());
+
+            return new CompressedEntries(outgoing, incoming, entries);
         } catch (Exception e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -188,5 +198,9 @@ public class EntryDAOimpl implements EntryDAO {
         entry.setType(EntryType.valueOf(result.getString("type")));
 
         return entry;
+    }
+
+    private double mapRowSum(ResultSet result, int rowNum) throws SQLException {
+        return result.getDouble("sum");
     }
 }
