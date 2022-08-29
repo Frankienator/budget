@@ -2,10 +2,8 @@ package frankie.financebudget.rest;
 
 import frankie.financebudget.entities.entities.dto.CompressedEntriesDto;
 import frankie.financebudget.entities.entities.dto.EntryDto;
-import frankie.financebudget.entities.entities.dto.MonthYearDto;
 import frankie.financebudget.entities.entities.mapper.CompressedEntriesMapper;
 import frankie.financebudget.entities.entities.mapper.EntryMapper;
-import frankie.financebudget.entities.entities.mapper.MonthYearMapper;
 import frankie.financebudget.entities.entities.objects.Entry;
 import frankie.financebudget.service.EntryService;
 import org.springframework.http.HttpStatus;
@@ -18,17 +16,15 @@ import java.util.stream.Stream;
 @RestController
 @RequestMapping(EntryEndpoint.ENTRY_URL)
 public class EntryEndpoint {
-
     static final String ENTRY_URL = "rest/api/1.0/entry";
     private final EntryService entryService;
     private final EntryMapper entryMapper;
-    private final MonthYearMapper monthYearMapper;
+
     private final CompressedEntriesMapper compressedEntriesMapper;
 
-    public EntryEndpoint(EntryService entryService, EntryMapper entryMapper, MonthYearMapper monthYearMapper, CompressedEntriesMapper compressedEntriesMapper) {
+    public EntryEndpoint(EntryService entryService, EntryMapper entryMapper, CompressedEntriesMapper compressedEntriesMapper) {
         this.entryService = entryService;
         this.entryMapper = entryMapper;
-        this.monthYearMapper = monthYearMapper;
         this.compressedEntriesMapper = compressedEntriesMapper;
     }
 
