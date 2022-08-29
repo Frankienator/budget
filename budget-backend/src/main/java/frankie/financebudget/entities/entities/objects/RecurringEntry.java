@@ -26,4 +26,60 @@ public class RecurringEntry {
         this.recurringInterval = recurringInterval;
         this.statusEnum = statusEnum;
     }
+
+    public Long getrId() {
+        return rId;
+    }
+
+    public void setrId(Long rId) {
+        this.rId = rId;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public EntryType getType() {
+        return type;
+    }
+
+    public void setType(EntryType type) {
+        this.type = type;
+    }
+
+    public LocalDate getStartingDate() {
+        return startingDate;
+    }
+
+    public void setStartingDate(LocalDate startingDate) {
+        this.startingDate = startingDate;
+    }
+
+    public RecurringInterval getRecurringInterval() {
+        return recurringInterval;
+    }
+
+    public void setRecurringInterval(RecurringInterval recurringInterval) {
+        this.recurringInterval = recurringInterval;
+    }
+
+    public StatusEnum getStatusEnum() {
+        return statusEnum;
+    }
+
+    public void setStatusEnum(StatusEnum statusEnum) {
+        this.statusEnum = statusEnum;
+    }
 }
