@@ -2,6 +2,9 @@ package frankie.financebudget.entities.entities.objects;
 
 import frankie.financebudget.entities.enumerations.TimeSet;
 
+/*
+An Object to be used within a RecurringEntry Object defining the Interval
+ */
 public class RecurringInterval {
 
     private TimeSet timeSetter;
@@ -9,7 +12,7 @@ public class RecurringInterval {
 
     public RecurringInterval(){};
 
-    public RecurringInterval(TimeSet timeSetter, int intervalRange) {
+    public RecurringInterval(int intervalRange, TimeSet timeSetter) {
         this.timeSetter = timeSetter;
         this.intervalRange = intervalRange;
     }
