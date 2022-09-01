@@ -27,6 +27,15 @@ public class RecurringEntry {
         this.statusEnum = statusEnum;
     }
 
+    public RecurringEntry(double amount, String description, EntryType type, LocalDate startingDate, RecurringInterval recurringInterval, StatusEnum statusEnum) {
+        this.amount = amount;
+        this.description = description;
+        this.type = type;
+        this.startingDate = startingDate;
+        this.recurringInterval = recurringInterval;
+        this.statusEnum = statusEnum;
+    }
+
     public Long getrId() {
         return rId;
     }

@@ -1,15 +1,16 @@
-package frankie.financebudget.persistence;
+package frankie.financebudget.service;
 
 import frankie.financebudget.entities.entities.objects.RecurringEntry;
-import frankie.financebudget.entities.entities.objects.RecurringInterval;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public interface RecurringEntryDAO {
+@Service
+public interface RecurringEntryService {
 
     List<RecurringEntry> getAll();
 
-    List<RecurringEntry> getById(Long id);
+    RecurringEntry getById(Long id);
 
     List<RecurringEntry> getAllActives();
 
