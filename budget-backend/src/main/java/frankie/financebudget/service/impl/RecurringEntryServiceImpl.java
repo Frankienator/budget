@@ -3,9 +3,11 @@ package frankie.financebudget.service.impl;
 import frankie.financebudget.entities.entities.objects.RecurringEntry;
 import frankie.financebudget.persistence.RecurringEntryDAO;
 import frankie.financebudget.service.RecurringEntryService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class RecurringEntryServiceImpl implements RecurringEntryService {
 
     private final RecurringEntryDAO recurringEntryDAO;

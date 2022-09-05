@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 public record RecurringEntryDto(
         Long rId,
-        double amount,
+        Double amount,
         String description,
         EntryType type,
         LocalDate startingDate,

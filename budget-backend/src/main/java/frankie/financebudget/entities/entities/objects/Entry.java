@@ -7,7 +7,7 @@ import frankie.financebudget.entities.enumerations.EntryType;
 public class Entry {
 
     private Long id;
-    private double amount;
+    private Double amount;
     private String description;
     private LocalDate dateCreated;
     private EntryType type;
@@ -48,11 +48,11 @@ public class Entry {
         this.id = id;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 

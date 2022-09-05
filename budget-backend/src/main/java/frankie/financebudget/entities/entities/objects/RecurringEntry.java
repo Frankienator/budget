@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class RecurringEntry {
 
     private Long rId;
-    private double amount;
+    private Double amount;
     private String description;
     private EntryType type;
     private LocalDate startingDate;
@@ -17,7 +17,7 @@ public class RecurringEntry {
 
     public RecurringEntry(){}
 
-    public RecurringEntry(Long rId, double amount, String description, EntryType type, LocalDate startingDate, RecurringInterval recurringInterval, StatusEnum statusEnum) {
+    public RecurringEntry(Long rId, Double amount, String description, EntryType type, LocalDate startingDate, RecurringInterval recurringInterval, StatusEnum statusEnum) {
         this.rId = rId;
         this.amount = amount;
         this.description = description;
@@ -44,11 +44,11 @@ public class RecurringEntry {
         this.rId = rId;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 

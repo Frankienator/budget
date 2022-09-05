@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public record EntryDto(
         Long id,
-        double amount,
+        Double amount,
         String description,
         LocalDate dateCreated,
         EntryType type) {
