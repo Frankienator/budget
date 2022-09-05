@@ -1,7 +1,6 @@
 package frankie.financebudget.persistence;
 
-import frankie.financebudget.entities.entities.objects.RecurringEntry;
-import frankie.financebudget.entities.entities.objects.RecurringInterval;
+import frankie.financebudget.entities.objects.RecurringEntry;
 
 import java.util.List;
 

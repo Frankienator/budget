@@ -1,9 +1,11 @@
 package frankie.financebudget.persistence.impl;
 
-import frankie.financebudget.entities.entities.objects.CompressedEntries;
-import frankie.financebudget.entities.enumerations.EntryType;
-import frankie.financebudget.entities.entities.objects.Entry;
+import frankie.financebudget.entities.objects.CompressedEntries;
 import frankie.financebudget.persistence.EntryDAO;
+import frankie.financebudget.entities.enumerations.EntryType;
+import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.exceptions.NotFoundException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -56,42 +58,37 @@ public class EntryDAOimpl implements EntryDAO {
     //SELECT * FROM entry
     @Override
     public List<Entry> getAllEntries() {
-        try {
-            return jdbcTemplate.query(SQL_GET_ALL_ENTRIES, this::mapRow);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
+        return jdbcTemplate.query(SQL_GET_ALL_ENTRIES, this::mapRow);
     }
 
 
     //SELECT * FROM entry WHERE id = ?
     @Override
-    public Entry getById(Long id){
+    public Entry getById(Long id) throws NotFoundException {
         try {
             List<Entry> result = jdbcTemplate.query(SQL_GET_BY_ID, this::mapRow, id);
             if (result.isEmpty()){
-                throw new Exception();
+                throw new NotFoundException("No entry with id " + id + " was found!");
             }
             return result.get(0);
-        } catch (Exception e) {
-            throw new RuntimeException();
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e);
         }
     }
-
 
     //SELECT * FROM entry WHERE EXTRACT(INTERVAL YEAR FROM dateCreated) = ? AND EXTRACT(INTERVAL MONTH FROM dateCreated) = ?;
     @Override
     public CompressedEntries getMonthResults(LocalDate monthYearCheck) {
-        try {
+        List<Entry> entries = jdbcTemplate.query(SQL_GET_BY_MONTH_YEAR, this::mapRow, monthYearCheck.getYear(), monthYearCheck.getMonthValue());
 
-            double outgoing = jdbcTemplate.query(SQL_GET_OUTGOING, this::mapRowSum, monthYearCheck.getYear(), monthYearCheck.getMonthValue()).get(0);
-            double incoming = jdbcTemplate.query(SQL_GET_INCOMING, this::mapRowSum, monthYearCheck.getYear(), monthYearCheck.getMonthValue()).get(0);
-            List<Entry> entries = jdbcTemplate.query(SQL_GET_BY_MONTH_YEAR, this::mapRow, monthYearCheck.getYear(), monthYearCheck.getMonthValue());
-
-            return new CompressedEntries(outgoing, incoming, entries);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        if (entries.isEmpty()) {
+            return new CompressedEntries(0, 0, entries);
         }
+
+        double outgoing = jdbcTemplate.query(SQL_GET_OUTGOING, this::mapRowSum, monthYearCheck.getYear(), monthYearCheck.getMonthValue()).get(0);
+        double incoming = jdbcTemplate.query(SQL_GET_INCOMING, this::mapRowSum, monthYearCheck.getYear(), monthYearCheck.getMonthValue()).get(0);
+
+        return new CompressedEntries(outgoing, incoming, entries);
     }
 
 
@@ -101,7 +98,7 @@ public class EntryDAOimpl implements EntryDAO {
 
     //INSERT INTO entry (description, amount, dateCreated, type) VALUES (?, ?, ?, ?)";
     @Override
-    public Entry createEntry(Entry create) {
+    public Entry createEntry(Entry create) throws RuntimeException {
         try {
            KeyHolder keyHolder = new GeneratedKeyHolder();
            jdbcTemplate.update(connection -> {
@@ -129,9 +126,8 @@ public class EntryDAOimpl implements EntryDAO {
 
            return created;
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new RuntimeException(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Issue connecting to database, should never happen: \n" + e.getMessage());
         }
     }
 
@@ -142,7 +138,7 @@ public class EntryDAOimpl implements EntryDAO {
 
     //UPDATE TABLE entry SET description = ?, amount = ?, dateCreated = ?, type = ? WHERE id = ?;
     @Override
-    public Entry updateEntry(Entry update) {
+    public Entry updateEntry(Entry update) throws RuntimeException {
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement statement = connection.prepareStatement(
@@ -159,8 +155,8 @@ public class EntryDAOimpl implements EntryDAO {
 
             return update;
 
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Issue connecting to database, should never happen: \n" + e.getMessage());
         }
     }
 
@@ -175,11 +171,11 @@ public class EntryDAOimpl implements EntryDAO {
         try {
 
             Long ret = delete;
-            int updateStatus = jdbcTemplate.update(SQL_DELETE_ENTRY, ret);
+            jdbcTemplate.update(SQL_DELETE_ENTRY, ret);
             return ret;
 
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException("Issue connecting to database, should never happen: \n" + e.getMessage());
         }
     }
 

@@ -1,7 +1,7 @@
-package frankie.financebudget.entities.entities.mapper;
+package frankie.financebudget.entities.mapper;
 
-import frankie.financebudget.entities.entities.dto.RecurringEntryDto;
-import frankie.financebudget.entities.entities.objects.RecurringEntry;
+import frankie.financebudget.entities.dto.RecurringEntryDto;
+import frankie.financebudget.entities.objects.RecurringEntry;
 import org.springframework.stereotype.Component;
 
 @Component

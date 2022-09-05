@@ -1,7 +1,7 @@
 package frankie.financebudget.persistence;
 
-import frankie.financebudget.entities.entities.objects.CompressedEntries;
-import frankie.financebudget.entities.entities.objects.Entry;
+import frankie.financebudget.entities.objects.CompressedEntries;
+import frankie.financebudget.entities.objects.Entry;
 
 import java.time.LocalDate;
 import java.util.List;

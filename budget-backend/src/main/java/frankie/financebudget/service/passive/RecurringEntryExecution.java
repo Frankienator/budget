@@ -1,7 +1,7 @@
 package frankie.financebudget.service.passive;
 
-import frankie.financebudget.entities.entities.objects.Entry;
-import frankie.financebudget.entities.entities.objects.RecurringEntry;
+import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.entities.objects.RecurringEntry;
 import frankie.financebudget.persistence.EntryDAO;
 import frankie.financebudget.persistence.RecurringEntryDAO;
 import frankie.financebudget.persistence.impl.EntryDAOimpl;

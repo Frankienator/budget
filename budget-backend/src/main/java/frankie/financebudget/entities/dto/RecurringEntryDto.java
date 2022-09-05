@@ -1,6 +1,6 @@
-package frankie.financebudget.entities.entities.dto;
+package frankie.financebudget.entities.dto;
 
-import frankie.financebudget.entities.entities.objects.RecurringInterval;
+import frankie.financebudget.entities.objects.RecurringInterval;
 import frankie.financebudget.entities.enumerations.EntryType;
 import frankie.financebudget.entities.enumerations.StatusEnum;
 

@@ -1,4 +1,4 @@
-package frankie.financebudget.entities.entities.objects;
+package frankie.financebudget.entities.objects;
 
 import java.util.List;
 

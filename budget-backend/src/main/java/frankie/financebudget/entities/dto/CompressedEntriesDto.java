@@ -1,4 +1,4 @@
-package frankie.financebudget.entities.entities.dto;
+package frankie.financebudget.entities.dto;
 
 import java.util.stream.Stream;
 

@@ -1,6 +1,6 @@
 package frankie.financebudget.service.impl;
 
-import frankie.financebudget.entities.entities.objects.RecurringEntry;
+import frankie.financebudget.entities.objects.RecurringEntry;
 import frankie.financebudget.persistence.RecurringEntryDAO;
 import frankie.financebudget.service.RecurringEntryService;
 import org.springframework.stereotype.Service;

@@ -1,6 +1,7 @@
 package frankie.financebudget.service.inputValidation;
 
-import frankie.financebudget.entities.entities.objects.Entry;
+import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.exceptions.ValidationException;
 import frankie.financebudget.persistence.EntryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ public class EntryInputValidator {
 
     private int descriptionLength = 256;
     private double maxAmount = Double.MAX_VALUE;
-    private double minAmount = -Double.MAX_VALUE;
+    private double minAmount = - Double.MAX_VALUE;
     private LocalDate today = LocalDate.now();
     private int status;
     private StringBuilder message;
@@ -94,7 +95,7 @@ public class EntryInputValidator {
             return true;
         }
 
-        return false;
+        throw new ValidationException(message.toString());
     }
 
     public boolean updateValidation(Entry toValidate) {
@@ -167,7 +168,7 @@ public class EntryInputValidator {
             return true;
         }
 
-        return false;
+        throw new ValidationException(message.toString());
     }
 
     public int getStatus() {

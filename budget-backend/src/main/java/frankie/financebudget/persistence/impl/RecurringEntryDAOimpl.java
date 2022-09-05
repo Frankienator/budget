@@ -1,19 +1,17 @@
 package frankie.financebudget.persistence.impl;
 
-import frankie.financebudget.entities.entities.objects.Entry;
-import frankie.financebudget.entities.entities.objects.RecurringEntry;
-import frankie.financebudget.entities.entities.objects.RecurringInterval;
+import frankie.financebudget.entities.objects.RecurringEntry;
+import frankie.financebudget.entities.objects.RecurringInterval;
+import frankie.financebudget.persistence.RecurringEntryDAO;
 import frankie.financebudget.entities.enumerations.EntryType;
 import frankie.financebudget.entities.enumerations.StatusEnum;
 import frankie.financebudget.entities.enumerations.TimeSet;
-import frankie.financebudget.persistence.RecurringEntryDAO;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository

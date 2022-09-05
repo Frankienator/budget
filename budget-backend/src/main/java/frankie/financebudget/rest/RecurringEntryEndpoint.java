@@ -1,8 +1,8 @@
 package frankie.financebudget.rest;
 
-import frankie.financebudget.entities.entities.dto.RecurringEntryDto;
-import frankie.financebudget.entities.entities.mapper.RecurringEntryMapper;
-import frankie.financebudget.entities.entities.objects.RecurringEntry;
+import frankie.financebudget.entities.dto.RecurringEntryDto;
+import frankie.financebudget.entities.mapper.RecurringEntryMapper;
+import frankie.financebudget.entities.objects.RecurringEntry;
 import frankie.financebudget.service.RecurringEntryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,12 @@
 package frankie.financebudget.rest;
 
-import frankie.financebudget.entities.entities.dto.CompressedEntriesDto;
-import frankie.financebudget.entities.entities.dto.EntryDto;
-import frankie.financebudget.entities.entities.mapper.CompressedEntriesMapper;
-import frankie.financebudget.entities.entities.mapper.EntryMapper;
-import frankie.financebudget.entities.entities.objects.Entry;
+import frankie.financebudget.entities.dto.CompressedEntriesDto;
+import frankie.financebudget.entities.dto.EntryDto;
+import frankie.financebudget.entities.mapper.CompressedEntriesMapper;
+import frankie.financebudget.entities.mapper.EntryMapper;
+import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.exceptions.NotFoundException;
+import frankie.financebudget.exceptions.ValidationException;
 import frankie.financebudget.service.EntryService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -38,20 +40,15 @@ public class EntryEndpoint {
     public EntryDto getById(@PathVariable Long id) {
         try {
             return entryMapper.entityToDto(entryService.getById(id));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
     @GetMapping("/byMonth")
     public CompressedEntriesDto getByMonth(@RequestParam(name = "year") String yearValue,@RequestParam(name = "month") String monthValue) {
-        try {
-
             LocalDate monthYear = LocalDate.of(Integer.valueOf(yearValue), Integer.valueOf(monthValue), 1);
             return compressedEntriesMapper.entityToDto(entryService.getByMonth(monthYear));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
-        }
     }
 
     @PostMapping("/create")
@@ -61,8 +58,8 @@ public class EntryEndpoint {
             Entry add = entryMapper.dtoToEntity(create);
             return entryMapper.entityToDto(entryService.createEntry(add));
 
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.valueOf(entryService.getEntryInputValidator().getStatus()), e.getMessage());
         }
     }
 
@@ -74,8 +71,10 @@ public class EntryEndpoint {
             Entry toUpdate = entryMapper.dtoToEntity(update);
             return entryMapper.entityToDto(entryService.updateEntry(toUpdate));
 
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.valueOf(entryService.getEntryInputValidator().getStatus()), e.getMessage());
         }
     }
 
@@ -85,8 +84,8 @@ public class EntryEndpoint {
 
             return entryService.deleteEntry(id);
 
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.I_AM_A_TEAPOT, e.getMessage());
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

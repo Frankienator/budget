@@ -1,7 +1,7 @@
-package frankie.financebudget.entities.entities.mapper;
+package frankie.financebudget.entities.mapper;
 
-import frankie.financebudget.entities.entities.dto.EntryDto;
-import frankie.financebudget.entities.entities.objects.Entry;
+import frankie.financebudget.entities.dto.EntryDto;
+import frankie.financebudget.entities.objects.Entry;
 import org.springframework.stereotype.Component;
 
 @Component

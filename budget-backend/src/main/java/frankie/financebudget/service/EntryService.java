@@ -1,7 +1,8 @@
 package frankie.financebudget.service;
 
-import frankie.financebudget.entities.entities.objects.CompressedEntries;
-import frankie.financebudget.entities.entities.objects.Entry;
+import frankie.financebudget.entities.objects.CompressedEntries;
+import frankie.financebudget.entities.objects.Entry;
+import frankie.financebudget.service.inputValidation.EntryInputValidator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,4 +20,6 @@ public interface EntryService {
     public Entry updateEntry(Entry update);
 
     public Long deleteEntry(Long delete);
+
+    public EntryInputValidator getEntryInputValidator();
 }
