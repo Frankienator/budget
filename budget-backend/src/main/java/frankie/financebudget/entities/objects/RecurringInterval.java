@@ -43,6 +43,11 @@ public class RecurringInterval {
     //Implement edge-case 29th february -> Recurring on 29.Feb will be stored as 1.Mar
     public boolean checkEligibility(LocalDate date) {
         LocalDate now = LocalDate.now();
+
+        if (date.isAfter(now)) {
+            return false;
+        }
+
         switch (timeSetter) {
             case year:
 
