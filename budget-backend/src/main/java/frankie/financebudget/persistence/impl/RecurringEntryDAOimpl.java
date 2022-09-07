@@ -2,10 +2,12 @@ package frankie.financebudget.persistence.impl;
 
 import frankie.financebudget.entities.objects.RecurringEntry;
 import frankie.financebudget.entities.objects.RecurringInterval;
+import frankie.financebudget.exceptions.NotFoundException;
 import frankie.financebudget.persistence.RecurringEntryDAO;
 import frankie.financebudget.entities.enumerations.EntryType;
 import frankie.financebudget.entities.enumerations.StatusEnum;
 import frankie.financebudget.entities.enumerations.TimeSet;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -56,29 +58,27 @@ public class RecurringEntryDAOimpl implements RecurringEntryDAO {
 
     @Override
     public List<RecurringEntry> getAll() {
-        try {
-            return jdbcTemplate.query(SQL_GET_ALL, this::mapRow);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return jdbcTemplate.query(SQL_GET_ALL, this::mapRow);
     }
 
     @Override
     public List<RecurringEntry> getById(Long id) {
         try {
-            return jdbcTemplate.query(SQL_GET_BY_ID, this::mapRow, id);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            List<RecurringEntry> ret = jdbcTemplate.query(SQL_GET_BY_ID, this::mapRow, id);
+            if (ret.isEmpty()) {
+                throw new NotFoundException("No entry with id " + id + " was found!\n");
+            }
+            return ret;
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException("This exception should never happen! Message: \n" + e.getMessage());
         }
     }
 
     @Override
     public List<RecurringEntry> getAllActives() {
-        try {
-            return jdbcTemplate.query(SQL_GET_TO_UPDATE, this::mapRow);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        return jdbcTemplate.query(SQL_GET_TO_UPDATE, this::mapRow);
     }
 
     //(description, amount, startingDate, intervalCount, timeInterval, status, type)
@@ -116,8 +116,8 @@ public class RecurringEntryDAOimpl implements RecurringEntryDAO {
 
             return created;
 
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException("This exception should never happen! Message: \n" + e.getMessage());
         }
     }
 
@@ -125,7 +125,7 @@ public class RecurringEntryDAOimpl implements RecurringEntryDAO {
     //            "status = ?, type = ? " +
     //            "WHERE id = ?";
     @Override
-    public RecurringEntry updateRecurringEntry(RecurringEntry recurringEntry) {
+    public RecurringEntry updateRecurringEntry(RecurringEntry recurringEntry) throws RuntimeException {
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement statement = connection.prepareStatement(
@@ -145,8 +145,8 @@ public class RecurringEntryDAOimpl implements RecurringEntryDAO {
 
             return recurringEntry;
 
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (DataAccessException e) {
+            throw new RuntimeException("This exception should never happen! Message: \n" + e.getMessage());
         }
     }
 

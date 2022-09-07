@@ -21,7 +21,7 @@ public class RecurringEntryExecution{
     RecurringEntryDAO recurringEntryDAO;
 
     @Scheduled(cron = "0 0 0 1/1 * ? *")
-    public void run() {
+    public void run() throws RuntimeException{
         try {
             //Set up time
             now = LocalDate.now();
@@ -31,8 +31,11 @@ public class RecurringEntryExecution{
             entryDAO = new EntryDAOimpl(new JdbcTemplate());
 
             //Fetch active recurring Entries, filter entries and add
-            createEntriesFromRecurring(recurringEntryDAO.getAllActives());
-        } catch (Exception e) {
+            List<RecurringEntry> actives = recurringEntryDAO.getAllActives();
+            if (!actives.isEmpty()){
+                createEntriesFromRecurring(actives);
+            }
+        } catch (RuntimeException e) {
             throw new RuntimeException(e.getMessage());
         }
     }
@@ -40,7 +43,7 @@ public class RecurringEntryExecution{
 
     //private methods
 
-    private void createEntriesFromRecurring(List<RecurringEntry> entries) {
+    private void createEntriesFromRecurring(List<RecurringEntry> entries) throws RuntimeException{
         Entry toAdd;
 
         for (int i = 0; i < entries.size(); i++) {

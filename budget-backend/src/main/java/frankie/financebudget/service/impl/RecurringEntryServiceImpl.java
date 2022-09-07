@@ -1,8 +1,12 @@
 package frankie.financebudget.service.impl;
 
 import frankie.financebudget.entities.objects.RecurringEntry;
+import frankie.financebudget.exceptions.NotFoundException;
+import frankie.financebudget.exceptions.ValidationException;
 import frankie.financebudget.persistence.RecurringEntryDAO;
 import frankie.financebudget.service.RecurringEntryService;
+import frankie.financebudget.service.inputValidation.RecurringEntryInputValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +15,12 @@ import java.util.List;
 public class RecurringEntryServiceImpl implements RecurringEntryService {
 
     private final RecurringEntryDAO recurringEntryDAO;
+    private final RecurringEntryInputValidator entryInputValidator;
 
-    public RecurringEntryServiceImpl(RecurringEntryDAO recurringEntryDAO) {
+    @Autowired
+    public RecurringEntryServiceImpl(RecurringEntryDAO recurringEntryDAO, RecurringEntryInputValidator entryInputValidator) {
         this.recurringEntryDAO = recurringEntryDAO;
+        this.entryInputValidator = entryInputValidator;
     }
 
 
@@ -26,12 +33,9 @@ public class RecurringEntryServiceImpl implements RecurringEntryService {
     public RecurringEntry getById(Long id) {
         try {
             List<RecurringEntry> ret = recurringEntryDAO.getById(id);
-            if (ret.isEmpty()){
-                throw new RuntimeException("List is empty");
-            }
             return ret.get(0);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (NotFoundException e) {
+            throw new NotFoundException(e.getMessage());
         }
     }
 
@@ -43,18 +47,26 @@ public class RecurringEntryServiceImpl implements RecurringEntryService {
     @Override
     public RecurringEntry createNewEntry(RecurringEntry recurringEntry) {
         try {
+            entryInputValidator.createValidation(recurringEntry);
             return recurringEntryDAO.createNewEntry(recurringEntry);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (ValidationException e) {
+            throw new ValidationException(e.getMessage());
         }
     }
 
     @Override
     public RecurringEntry updateRecurringEntry(RecurringEntry recurringEntry) {
         try {
+            entryInputValidator.updateValidation(recurringEntry);
             return recurringEntryDAO.updateRecurringEntry(recurringEntry);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+        } catch (ValidationException e) {
+            throw new ValidationException(e.getMessage());
         }
     }
+
+    public RecurringEntryInputValidator getEntryInputValidator() {
+        return entryInputValidator;
+    }
 }
+
+

@@ -167,7 +167,7 @@ public class EntryDAOimpl implements EntryDAO {
 
     //DELETE FROM entry WHERE id = ?;
     @Override
-    public Long deleteEntry(Long delete) {
+    public Long deleteEntry(Long delete) throws RuntimeException{
         try {
 
             Long ret = delete;
