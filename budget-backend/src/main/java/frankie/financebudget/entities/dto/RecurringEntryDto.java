@@ -1,5 +1,6 @@
 package frankie.financebudget.entities.dto;
 
+import frankie.financebudget.entities.enumerations.TimeSet;
 import frankie.financebudget.entities.objects.RecurringInterval;
 import frankie.financebudget.entities.enumerations.EntryType;
 import frankie.financebudget.entities.enumerations.StatusEnum;
@@ -12,6 +13,7 @@ public record RecurringEntryDto(
         String description,
         EntryType type,
         LocalDate startingDate,
-        RecurringInterval recurringInterval,
+        TimeSet timeSet,
+        int intervalRange,
         StatusEnum statusEnum
 ) {}

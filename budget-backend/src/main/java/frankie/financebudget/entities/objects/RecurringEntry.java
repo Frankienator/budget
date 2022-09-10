@@ -2,6 +2,7 @@ package frankie.financebudget.entities.objects;
 
 import frankie.financebudget.entities.enumerations.EntryType;
 import frankie.financebudget.entities.enumerations.StatusEnum;
+import frankie.financebudget.entities.enumerations.TimeSet;
 
 import java.time.LocalDate;
 
@@ -27,12 +28,22 @@ public class RecurringEntry {
         this.statusEnum = statusEnum;
     }
 
-    public RecurringEntry(double amount, String description, EntryType type, LocalDate startingDate, RecurringInterval recurringInterval, StatusEnum statusEnum) {
+    public RecurringEntry(Double amount, String description, EntryType type, LocalDate startingDate, RecurringInterval recurringInterval, StatusEnum statusEnum) {
         this.amount = amount;
         this.description = description;
         this.type = type;
         this.startingDate = startingDate;
         this.recurringInterval = recurringInterval;
+        this.statusEnum = statusEnum;
+    }
+
+    public RecurringEntry(Long rId, Double amount, String description, EntryType type, LocalDate startingDate, TimeSet timeSet, Integer intervalRange, StatusEnum statusEnum) {
+        this.rId = rId;
+        this.amount = amount;
+        this.description = description;
+        this.type = type;
+        this.startingDate = startingDate;
+        this.recurringInterval = new RecurringInterval(intervalRange, timeSet);
         this.statusEnum = statusEnum;
     }
 

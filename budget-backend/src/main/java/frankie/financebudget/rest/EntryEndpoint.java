@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.stream.Stream;
 
 @RestController
@@ -46,7 +47,11 @@ public class EntryEndpoint {
     }
 
     @GetMapping("/byMonth")
-    public CompressedEntriesDto getByMonth(@RequestParam(name = "year") String yearValue,@RequestParam(name = "month") String monthValue) {
+    public CompressedEntriesDto getByMonth(@RequestParam(name = "year") String yearValue,@RequestParam(name = "month") int monthValue) {
+            if (monthValue > 12 || monthValue <= 0) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Please enter monthValue between 1 and 12!");
+            }
+
             LocalDate monthYear = LocalDate.of(Integer.valueOf(yearValue), Integer.valueOf(monthValue), 1);
             return compressedEntriesMapper.entityToDto(entryService.getByMonth(monthYear));
     }
@@ -64,7 +69,7 @@ public class EntryEndpoint {
     }
 
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/update")
     public EntryDto updateEntry(@RequestBody EntryDto update) {
         try {
 

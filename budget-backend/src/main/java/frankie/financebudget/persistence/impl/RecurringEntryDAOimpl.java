@@ -37,9 +37,9 @@ public class RecurringEntryDAOimpl implements RecurringEntryDAO {
             "VALUES (?,?,?,?,?,?,?)";
 
     //PUT Queries
-    private static final String SQL_UPDATE_RECURRING_ENTRY = "UPDATE TABLE " +
+    private static final String SQL_UPDATE_RECURRING_ENTRY = "UPDATE " +
             TABLE_NAME +
-            " SET description = ?, amount = ?, startingDate = ?, intervalCount = ?, timeInterval = ?" +
+            " SET description = ?, amount = ?, startingDate = ?, intervalCount = ?, timeInterval = ?, " +
             "status = ?, type = ? " +
             "WHERE id = ?";
 

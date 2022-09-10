@@ -13,7 +13,7 @@ public class Entry {
     private EntryType type;
 
     public Entry(
-            double amount,
+            Double amount,
             String description,
             LocalDate dateCreated,
             EntryType type) {
@@ -26,7 +26,7 @@ public class Entry {
 
     public Entry(
             Long id,
-            double amount,
+            Double amount,
             String description,
             LocalDate dateCreated,
             EntryType type) {

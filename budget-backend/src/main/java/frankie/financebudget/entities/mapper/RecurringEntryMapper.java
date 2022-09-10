@@ -14,7 +14,8 @@ public class RecurringEntryMapper {
                 recurringEntryDto.description(),
                 recurringEntryDto.type(),
                 recurringEntryDto.startingDate(),
-                recurringEntryDto.recurringInterval(),
+                recurringEntryDto.timeSet(),
+                recurringEntryDto.intervalRange(),
                 recurringEntryDto.statusEnum()
         );
     }
@@ -26,7 +27,8 @@ public class RecurringEntryMapper {
           recurringEntry.getDescription(),
           recurringEntry.getType(),
           recurringEntry.getStartingDate(),
-          recurringEntry.getRecurringInterval(),
+          recurringEntry.getRecurringInterval().getTimeSetter(),
+          recurringEntry.getRecurringInterval().getIntervalRange(),
           recurringEntry.getStatusEnum()
         );
     }

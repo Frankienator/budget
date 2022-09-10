@@ -16,8 +16,8 @@ import java.util.regex.Pattern;
 public class EntryInputValidator {
 
     private int descriptionLength = 256;
-    private double maxAmount = Double.MAX_VALUE;
-    private double minAmount = - Double.MAX_VALUE;
+    private double maxAmount = 10000000;
+    private double minAmount = - 10000000;
     private LocalDate today = LocalDate.now();
     private int status;
     private StringBuilder message;
@@ -31,48 +31,54 @@ public class EntryInputValidator {
 
     public boolean createValidation(Entry toValidate) {
         this.status = 200;
-        this.message = new StringBuilder("Message: \n");
+        this.message = new StringBuilder("Message: ");
 
         //check id
         if (toValidate.getId() != null) {
             setStatus(400);
-            message.append("Id must not be defined!\n");
+            message.append("Id must not be defined!");
         }
 
         //check amount
         //check null
         if (toValidate.getAmount() == null) {
             setStatus(400);
-            message.append("Amount must not be null!\n");
+            message.append("Amount must not be null!");
         }
-        //check if amount is a number
-        else if (toValidate.getAmount().isNaN()) {
-            setStatus(409);
-            message.append("Amount must be a defined number!");
-        }
-        else if (toValidate.getAmount() < minAmount || toValidate.getAmount() > maxAmount) {
-            setStatus(409);
-            message.append("Amount must be within " + minAmount + " - " + maxAmount + "!\n");
+        else {
+            //check if amount is a number
+            if (toValidate.getAmount().isNaN()) {
+                setStatus(409);
+                message.append("Amount must be a defined number!");
+            }
+            //check amount
+            else if (toValidate.getAmount() < minAmount || toValidate.getAmount() > maxAmount) {
+                setStatus(409);
+                message.append("Amount must be within " + minAmount + " and " + maxAmount + "!");
+            }
         }
 
         //check description
         //check null
-        Pattern p = Pattern.compile("[ ]*");
-        Matcher m = p.matcher(toValidate.getDescription());
 
         if (toValidate.getDescription() == null) {
             setStatus(400);
-            message.append("Description must be given!\n");
+            message.append("Description must be given!");
         }
-        //check if only whitespace
-        else if (m.matches()) {
-            setStatus(409);
-            message.append("Description must not only contain Whitespaces!\n");
-        }
-        //check maxlength
-        else if (toValidate.getDescription().length() > descriptionLength) {
-            setStatus(409);
-            message.append("Description is too Long! Max length is " + descriptionLength + " characters!\n");
+        else {
+            //check for whitespaces
+            Pattern p = Pattern.compile("[ ]*");
+            Matcher m = p.matcher(toValidate.getDescription());
+
+            if (m.matches()) {
+                setStatus(409);
+                message.append("Description must not only contain Whitespaces!");
+            }
+            //check maxlength
+            else if (toValidate.getDescription().length() > descriptionLength) {
+                setStatus(409);
+                message.append("Description is too Long! Max length is " + descriptionLength + " characters!");
+            }
         }
 
         //check dateCreated
@@ -100,12 +106,12 @@ public class EntryInputValidator {
 
     public boolean updateValidation(Entry toValidate) {
         this.status = 200;
-        this.message = new StringBuilder("Message: \n");
+        this.message = new StringBuilder("Message: ");
 
         //check id
         if (toValidate.getId() == null) {
             setStatus(400);
-            message.append("Id must be defined!\n");
+            message.append("Id must be defined!");
         }
         if (toValidate.getId() <= 0) {
             setStatus(409);
@@ -116,7 +122,7 @@ public class EntryInputValidator {
         //check null
         if (toValidate.getAmount() == null) {
             setStatus(400);
-            message.append("Amount must not be null!\n");
+            message.append("Amount must not be null!");
         }
         //check if amount is a number
         else if (toValidate.getAmount().isNaN()) {
@@ -125,27 +131,30 @@ public class EntryInputValidator {
         }
         else if (toValidate.getAmount() < minAmount || toValidate.getAmount() > maxAmount) {
             setStatus(409);
-            message.append("Amount must be within " + minAmount + " - " + maxAmount + "!\n");
+            message.append("Amount must be within " + minAmount + " and " + maxAmount + "!");
         }
 
         //check description
         //check null
-        Pattern p = Pattern.compile("[ ]*");
-        Matcher m = p.matcher(toValidate.getDescription());
 
         if (toValidate.getDescription() == null) {
             setStatus(400);
-            message.append("Description must be given!\n");
+            message.append("Description must be given!");
         }
-        //check if only whitespace
-        else if (m.matches()) {
-            setStatus(409);
-            message.append("Description must not only contain Whitespaces!\n");
-        }
-        //check maxlength
-        else if (toValidate.getDescription().length() > descriptionLength) {
-            setStatus(409);
-            message.append("Description is too Long! Max length is " + descriptionLength + " characters!\n");
+        else {
+            //check for whitespaces
+            Pattern p = Pattern.compile("[ ]*");
+            Matcher m = p.matcher(toValidate.getDescription());
+
+            if (m.matches()) {
+                setStatus(409);
+                message.append("Description must not only contain Whitespaces!");
+            }
+            //check maxlength
+            else if (toValidate.getDescription().length() > descriptionLength) {
+                setStatus(409);
+                message.append("Description is too Long! Max length is " + descriptionLength + " characters!");
+            }
         }
 
         //check dateCreated

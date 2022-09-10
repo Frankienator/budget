@@ -47,6 +47,18 @@ public class RecurringEntryEndpoint {
                     .map(recurringEntryMapper::entityToDto);
     }
 
+    /*
+    Example JSON
+    {
+        "amount": 100.0,
+        "description": "yessir",
+        "startingDate": "2022-01-15",
+        "type": "freizeit",
+        "timeSet": "day",
+        "intervalRange": 3,
+        "statusEnum": "active"
+}
+     */
     @PostMapping("/create")
     public RecurringEntry createRecurringEntry(@RequestBody RecurringEntryDto create) {
         try {
@@ -60,7 +72,7 @@ public class RecurringEntryEndpoint {
         }
     }
 
-    @PutMapping("/{id}/update")
+    @PutMapping("/update")
     public RecurringEntry updateRecurringEntry(@RequestBody RecurringEntryDto update) {
         try {
             RecurringEntry toUpdate = recurringEntryMapper.dtoToEntity(update);

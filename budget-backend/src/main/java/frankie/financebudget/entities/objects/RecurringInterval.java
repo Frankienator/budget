@@ -14,11 +14,11 @@ An Object to be used within a RecurringEntry Object defining the Interval
 public class RecurringInterval {
 
     private TimeSet timeSetter;
-    private int intervalRange;
+    private Integer intervalRange;
 
     public RecurringInterval(){};
 
-    public RecurringInterval(int intervalRange, TimeSet timeSetter) {
+    public RecurringInterval(Integer intervalRange, TimeSet timeSetter) {
         this.timeSetter = timeSetter;
         this.intervalRange = intervalRange;
     }
@@ -35,7 +35,7 @@ public class RecurringInterval {
         return intervalRange;
     }
 
-    public void setIntervalRange(int intervalRange) {
+    public void setIntervalRange(Integer intervalRange) {
         this.intervalRange = intervalRange;
     }
 
