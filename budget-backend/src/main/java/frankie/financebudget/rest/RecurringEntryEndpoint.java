@@ -59,7 +59,7 @@ public class RecurringEntryEndpoint {
         "statusEnum": "active"
 }
      */
-    @PostMapping("/create")
+    @PostMapping("")
     public RecurringEntry createRecurringEntry(@RequestBody RecurringEntryDto create) {
         try {
             RecurringEntry add = recurringEntryMapper.dtoToEntity(create);
@@ -72,7 +72,7 @@ public class RecurringEntryEndpoint {
         }
     }
 
-    @PutMapping("/update")
+    @PatchMapping("")
     public RecurringEntry updateRecurringEntry(@RequestBody RecurringEntryDto update) {
         try {
             RecurringEntry toUpdate = recurringEntryMapper.dtoToEntity(update);

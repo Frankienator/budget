@@ -56,7 +56,7 @@ public class EntryEndpoint {
             return compressedEntriesMapper.entityToDto(entryService.getByMonth(monthYear));
     }
 
-    @PostMapping("/create")
+    @PostMapping("")
     public EntryDto createEntry(@RequestBody EntryDto create) {
         try {
 
@@ -69,7 +69,7 @@ public class EntryEndpoint {
     }
 
 
-    @PutMapping("/update")
+    @PatchMapping("")
     public EntryDto updateEntry(@RequestBody EntryDto update) {
         try {
 
