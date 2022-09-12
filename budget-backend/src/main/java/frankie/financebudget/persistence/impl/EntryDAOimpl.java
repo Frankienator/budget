@@ -25,7 +25,8 @@ public class EntryDAOimpl implements EntryDAO {
     private static final String SQL_TABLE_NAME = "entry";
 
     //Get Queries
-    private static final String SQL_GET_ALL_ENTRIES = "SELECT * FROM " + SQL_TABLE_NAME;
+    private static final String SQL_GET_ALL_ENTRIES = "SELECT * FROM " + SQL_TABLE_NAME + " ORDER BY id ASC LIMIT ? OFFSET ?";
+    //private static final String SQL_GET_ALL_ENTRIES = "SELECT * FROM " + SQL_TABLE_NAME + " ORDER BY id ASC";
     private static final String SQL_GET_BY_ID = "SELECT * FROM " + SQL_TABLE_NAME + " WHERE id = ?";
     private static final String SQL_GET_BY_MONTH_YEAR = "SELECT * FROM " + SQL_TABLE_NAME +
             " WHERE EXTRACT(YEAR FROM dateCreated) = ? AND EXTRACT(MONTH FROM dateCreated) = ?";
@@ -57,8 +58,8 @@ public class EntryDAOimpl implements EntryDAO {
 
     //SELECT * FROM entry
     @Override
-    public List<Entry> getAllEntries() {
-        return jdbcTemplate.query(SQL_GET_ALL_ENTRIES, this::mapRow);
+    public List<Entry> getAllEntries(Long offset, Long size) {
+        return jdbcTemplate.query(SQL_GET_ALL_ENTRIES, this::mapRow, size, offset);
     }
 
 

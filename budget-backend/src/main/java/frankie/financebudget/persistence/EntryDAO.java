@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface EntryDAO {
 
-    public List<Entry> getAllEntries();
+    public List<Entry> getAllEntries(Long offset, Long size);
 
     public Entry getById(Long id);
 

@@ -32,8 +32,8 @@ public class EntryEndpoint {
     }
 
     @GetMapping("")
-    public Stream<EntryDto> getAllEntries() {
-        return entryService.getAllEntries().stream()
+    public Stream<EntryDto> getAllEntries(@RequestParam(name = "page", defaultValue = "1") Long page, @RequestParam(name = "size", defaultValue = "20") Long size) {
+        return entryService.getAllEntries(page, size).stream()
                 .map(entryMapper::entityToDto);
     }
 

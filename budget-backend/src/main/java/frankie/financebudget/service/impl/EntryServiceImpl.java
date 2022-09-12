@@ -27,8 +27,9 @@ public class EntryServiceImpl implements EntryService {
     }
 
     @Override
-    public List<Entry> getAllEntries() {
-        return entryDAO.getAllEntries();
+    public List<Entry> getAllEntries(Long page, Long size) {
+        Long offset = (page - 1) * size;
+        return entryDAO.getAllEntries(offset, size);
     }
 
     @Override

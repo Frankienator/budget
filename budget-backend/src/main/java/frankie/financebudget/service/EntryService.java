@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface EntryService {
 
-    public List<Entry> getAllEntries();
+    public List<Entry> getAllEntries(Long page, Long size);
 
     public Entry getById(Long id);
 
